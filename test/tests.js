@@ -257,4 +257,27 @@ describe('buildcontrol', function() {
 
   });
 
+
+  describe.only('preview build branch', function() {
+    it('should have created a local branch "build"', function(done) {
+      var tasks = [];
+
+      tasks.push(function(next) {
+        execScenario(function(err) {
+          next(err);
+        });
+      });
+
+      tasks.push(function(next) {
+        childProcess.exec('git branch', {cwd: 'repo'}, function(err, stdout) {
+          stdout.should.have.string('build');
+          next();
+        });
+      });
+
+      async.series(tasks, done);
+    });
+
+  });
+
 });
